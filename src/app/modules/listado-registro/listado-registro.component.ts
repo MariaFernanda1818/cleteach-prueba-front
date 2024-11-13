@@ -1,4 +1,10 @@
 import { Component } from '@angular/core';
+import { IExamen } from '@sharedModule/models/IExamen';
+import { RespuestaGeneral } from '@sharedModule/models/RespuestaGeneral';
+import { PacienteService } from '@sharedModule/service/paciente.service';
+import { UtilitiesService } from '@sharedModule/service/utilities.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { catchError, finalize, of, tap } from 'rxjs';
 
 @Component({
   selector: 'app-listado-registro',
@@ -6,14 +12,34 @@ import { Component } from '@angular/core';
   styleUrl: './listado-registro.component.scss'
 })
 export class ListadoRegistroComponent {
-  data = [
-    { title: 'Tarjeta 1', subtitle: 'Subtítulo 1', description: 'Descripción de la tarjeta 1.' },
-    { title: 'Tarjeta 2', subtitle: 'Subtítulo 2', description: 'Descripción de la tarjeta 2.' },
-    { title: 'Tarjeta 3', subtitle: 'Subtítulo 3', description: 'Descripción de la tarjeta 3.' },
-    { title: 'Tarjeta 4', subtitle: 'Subtítulo 4', description: 'Descripción de la tarjeta 4.' },
-    { title: 'Tarjeta 5', subtitle: 'Subtítulo 5', description: 'Descripción de la tarjeta 5.' },
-    { title: 'Tarjeta 6', subtitle: 'Subtítulo 6', description: 'Descripción de la tarjeta 6.' },
-    { title: 'Tarjeta 7', subtitle: 'Subtítulo 7', description: 'Descripción de la tarjeta 7.' },
-    { title: 'Tarjeta 8', subtitle: 'Subtítulo 8', description: 'Descripción de la tarjeta 8.' }
-  ];
+
+  constructor(private pacienteService:PacienteService,
+    private utilitiesService:UtilitiesService,
+    private spinner:NgxSpinnerService,
+  ){}
+  
+  data:IExamen[] = []
+
+  ngOnInit(): void {
+    this.generarData()
+  }
+
+  private generarData(){
+    this.pacienteService.consultarPacientes().pipe(
+      tap((objeto:RespuestaGeneral) => {
+        this.data = objeto.data as IExamen[]
+      }),
+      catchError((err) => {
+        console.error("Error: ", err);
+        this.utilitiesService.showErrorMessage(err.message);
+        this.spinner.hide();
+        return of(null);
+      }),
+      finalize(() => {
+        console.log("Se consultaron correctamente");
+      })
+    ).subscribe()
+  }
+
+
 }
