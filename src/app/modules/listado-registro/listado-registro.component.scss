@@ -1,0 +1,21 @@
+html, body {
+    height: 100%; /* Aseguramos que ocupen el 100% de la pantalla */
+    margin: 0;
+  }
+  
+  .container {
+    height: 100vh; /* Altura completa de la pantalla */
+    display: flex;
+  }
+  
+  .card-container {
+    max-height: 70%; /* Limita la altura del contenedor de tarjetas */
+    width: 80%; /* Ajusta el ancho del contenedor de tarjetas */
+    overflow-y: auto; /* Habilita scroll interno si es necesario */
+    padding: 15px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  

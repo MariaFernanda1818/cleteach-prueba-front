@@ -30,6 +30,7 @@
               "src/assets"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -65,7 +66,9 @@
               "buildTarget": "clteach-prueba:build:production"
             },
             "development": {
-              "buildTarget": "clteach-prueba:build:development"
+              "buildTarget": "clteach-prueba:build:development",
+              "port": 4200,
+              "proxyConfig": "proxy.dev.conf.js" 
             }
           },
           "defaultConfiguration": "development"
@@ -90,6 +93,7 @@
               "src/assets"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.scss"
             ],
             "scripts": []
