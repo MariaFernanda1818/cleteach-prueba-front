@@ -1,5 +1,8 @@
 export interface IPaciente{
+
+    idPaciente:number;
+
     nombrePaciente:string;
 
-    numeroOrden:number;
+    numeroOrden:string;
 }

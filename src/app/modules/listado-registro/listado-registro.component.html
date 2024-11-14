@@ -1,26 +1,47 @@
-<div class="container d-flex align-items-center justify-content-center">
-  <div class="card-container">
-    <div class="row g-3">
-      <!-- Iteración de tarjetas -->
-      <div
-        class="col-12 col-md-6 col-lg-4"
-        *ngFor="let item of data"
-        [attr.aria-label]="'Información del examen ' + item.codigoExamen"
-      >
-        <mat-card>
-          <!-- Cabecera del examen -->
-          <mat-card-header>
-            <mat-card-title>{{ item.codigoExamen }}</mat-card-title>
-          </mat-card-header>
+<div class="container d-flex flex-column align-items-center justify-content-center py-4 vh-100">
+  <div class="row gx-4 gy-4 card-scroll w-100">
+    <!-- Iteración de tarjetas -->
+    <div
+      class="col-12 col-md-6 col-lg-4 d-flex align-items-stretch"
+      *ngFor="let item of data"
+      [attr.aria-label]="'Información del paciente ' + item.numeroOrden"
+    >
+      <mat-card class="card-equal shadow">
+        <!-- Cabecera de la tarjeta -->
+        <mat-card-header>
+          <mat-card-title>
+            <h2 class="text-primary mb-2">{{ item.nombrePaciente }}</h2>
+          </mat-card-title>
+          <mat-card-subtitle class="text-muted">
+            <small>Número de Orden: {{ item.numeroOrden }}</small>
+          </mat-card-subtitle>
+        </mat-card-header>
 
-          <!-- Contenido del examen -->
-          <mat-card-content>
-            <p><strong>Nombre del Paciente:</strong> {{ item.pacienteFk.nombrePaciente }}</p>
-            <p><strong>Número de Orden:</strong> {{ item.pacienteFk.numeroOrden }}</p>
-            <p><strong>Resultado:</strong> {{ item.resultadoExamen }}</p>
-          </mat-card-content>
-        </mat-card>
-      </div>
+        <!-- Contenido del examen con selección -->
+        <mat-card-content>
+          <div class="mb-3">
+            <p><strong>Seleccione un Código de Examen:</strong></p>
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Código de Examen</mat-label>
+              <mat-select
+                [(value)]="selectedExamen[item.idPaciente]"
+                (selectionChange)="onExamenChange($event.value, item.idPaciente)"
+              >
+                <mat-option *ngFor="let examen of item.examenes" [value]="examen.idExamen">
+                  {{ examen.codigoExamen }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div>
+            <p><strong>Resultado del Examen:</strong></p>
+            <p class="bg-light p-2 rounded">
+              <strong>ID Examen:</strong> {{ selectedExamen[item.idPaciente] }}<br />
+              <strong>Resultado:</strong> {{ getExamenResultado(item.idPaciente, selectedExamen[item.idPaciente]) }}
+            </p>
+          </div>
+        </mat-card-content>
+      </mat-card>
     </div>
   </div>
 </div>
